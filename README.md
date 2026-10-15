@@ -1,5 +1,7 @@
 # 全台停車費查詢
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 Python Flask 後端 + 純前端 HTML/JS，查詢全台 21 縣市路邊停車費。
 
 ## 快速開始
@@ -87,6 +89,12 @@ python3 app.py
 | 台東縣 | https://tt.guoyun.com.tw/TrafficPayBill/Parking/PayBill/CarID/{CarID}/CarType/{CarType} |
 | 金門縣 | https://km.guoyun.com.tw/TrafficPayBill/Parking/PayBill/CarID/{CarID}/CarType/{CarType} |
 | 澎湖縣 | https://parking.penghu.gov.tw/TrafficPayBill/Parking/PayBill/CarID/{CarID}/CarType/{CarType} |
+
+## License
+
+本專案以 [MIT License](LICENSE) 釋出。
+
+**注意**：本 License 僅適用於程式碼本身。透過本工具查詢之停車費資料，其著作權與使用規範仍依 [TDX 運輸資料流通服務平台資料使用授權規範](https://tdx.transportdata.tw/term) 及各縣市政府相關規定辦理。
 
 ## 注意事項
 
