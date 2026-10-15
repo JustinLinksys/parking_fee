@@ -7,11 +7,15 @@ Python Flask 後端 + 純前端 HTML/JS，查詢全台 21 縣市路邊停車費�
 ```bash
 cd ~/code/parking_fee
 
-# 安裝依賴
+# 建立 venv 並安裝依賴
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 
 # 啟動後端
 python3 app.py
+# 或
+./run.sh
 ```
 
 打開瀏覽器訪問：http://localhost:5001
