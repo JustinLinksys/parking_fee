@@ -204,6 +204,24 @@
             padding: 16px;
             border-top: 1px solid #eee;
         }
+        .warning-banner {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #856404;
+        }
+        .warning-banner strong { color: #856404; }
+        .cors-proxy-note {
+            font-size: 12px;
+            color: #666;
+            margin-top: 8px;
+            padding: 8px 12px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
         .checkbox-group {
             display: flex;
             flex-wrap: wrap;
@@ -238,6 +256,12 @@
         </div>
 
         <div class="form-section">
+            <div class="warning-banner">
+                <strong>⚠️ 瀏覽器 CORS 限制說明</strong><br>
+                各縣市政府 API 未開放跨域請求（CORS），瀏覽器直接呼叫會被阻擋。
+                目前使用公共 CORS Proxy 轉發請求，速度較慢且可能不穩定。
+                若查詢失敗，建議改用各縣市官方網站查詢。
+            </div>
             <div class="form-row">
                 <div class="form-group">
                     <label for="carId">車牌號碼</label>
@@ -258,33 +282,40 @@
             </div>
 
             <div class="form-group">
-                <label>選擇查詢縣市（預設全選）</label>
+                <label>選擇查詢縣市（建議只選 2-3 個，全選查詢時間很長）</label>
                 <div class="checkbox-group" id="cityCheckboxes">
                     <label class="checkbox-item selected"><input type="checkbox" value="taipei" checked> 台北市</label>
                     <label class="checkbox-item selected"><input type="checkbox" value="newtaipei" checked> 新北市</label>
-                    <label class="checkbox-item selected"><input type="checkbox" value="keelung" checked> 基隆市</label>
-                    <label class="checkbox-item selected"><input type="checkbox" value="taoyuan" checked> 桃園市</label>
-                    <label class="checkbox-item selected"><input type="checkbox" value="hsinchu_city" checked> 新竹市</label>
-                    <label class="checkbox-item selected"><input type="checkbox" value="hsinchu_county" checked> 新竹縣</label>
-                    <label class="checkbox-item selected"><input type="checkbox" value="miaoli" checked> 苗栗縣</label>
-                    <label class="checkbox-item selected"><input type="checkbox" value="taichung" checked> 台中市</label>
-                    <label class="checkbox-item selected"><input type="checkbox" value="changhua" checked> 彰化縣</label>
-                    <label class="checkbox-item selected"><input type="checkbox" value="yunlin" checked> 雲林縣</label>
-                    <label class="checkbox-item selected"><input type="checkbox" value="chiayi_city" checked> 嘉義市</label>
-                    <label class="checkbox-item selected"><input type="checkbox" value="chiayi_county" checked> 嘉義縣</label>
-                    <label class="checkbox-item selected"><input type="checkbox" value="tainan" checked> 台南市</label>
-                    <label class="checkbox-item selected"><input type="checkbox" value="kaohsiung" checked> 高雄市</label>
-                    <label class="checkbox-item selected"><input type="checkbox" value="pingtung" checked> 屏東縣</label>
-                    <label class="checkbox-item selected"><input type="checkbox" value="nantou" checked> 南投縣</label>
-                    <label class="checkbox-item selected"><input type="checkbox" value="yilan" checked> 宜蘭縣</label>
-                    <label class="checkbox-item selected"><input type="checkbox" value="hualien" checked> 花蓮縣</label>
-                    <label class="checkbox-item selected"><input type="checkbox" value="taitung" checked> 台東縣</label>
-                    <label class="checkbox-item selected"><input type="checkbox" value="kinmen" checked> 金門縣</label>
-                    <label class="checkbox-item selected"><input type="checkbox" value="penghu" checked> 澎湖縣</label>
+                    <label class="checkbox-item"><input type="checkbox" value="keelung"> 基隆市</label>
+                    <label class="checkbox-item"><input type="checkbox" value="taoyuan"> 桃園市</label>
+                    <label class="checkbox-item"><input type="checkbox" value="hsinchu_city"> 新竹市</label>
+                    <label class="checkbox-item"><input type="checkbox" value="hsinchu_county"> 新竹縣</label>
+                    <label class="checkbox-item"><input type="checkbox" value="miaoli"> 苗栗縣</label>
+                    <label class="checkbox-item"><input type="checkbox" value="taichung"> 台中市</label>
+                    <label class="checkbox-item"><input type="checkbox" value="changhua"> 彰化縣</label>
+                    <label class="checkbox-item"><input type="checkbox" value="yunlin"> 雲林縣</label>
+                    <label class="checkbox-item"><input type="checkbox" value="chiayi_city"> 嘉義市</label>
+                    <label class="checkbox-item"><input type="checkbox" value="chiayi_county"> 嘉義縣</label>
+                    <label class="checkbox-item"><input type="checkbox" value="tainan"> 台南市</label>
+                    <label class="checkbox-item"><input type="checkbox" value="kaohsiung"> 高雄市</label>
+                    <label class="checkbox-item"><input type="checkbox" value="pingtung"> 屏東縣</label>
+                    <label class="checkbox-item"><input type="checkbox" value="nantou"> 南投縣</label>
+                    <label class="checkbox-item"><input type="checkbox" value="yilan"> 宜蘭縣</label>
+                    <label class="checkbox-item"><input type="checkbox" value="hualien"> 花蓮縣</label>
+                    <label class="checkbox-item"><input type="checkbox" value="taitung"> 台東縣</label>
+                    <label class="checkbox-item"><input type="checkbox" value="kinmen"> 金門縣</label>
+                    <label class="checkbox-item"><input type="checkbox" value="penghu"> 澎湖縣</label>
+                </div>
+                <div style="margin-top:8px; font-size:13px;">
+                    <button type="button" onclick="selectAllCities()" style="padding:4px 12px; font-size:12px; cursor:pointer;">全選</button>
+                    <button type="button" onclick="deselectAllCities()" style="padding:4px 12px; font-size:12px; cursor:pointer; margin-left:8px;">全不選</button>
                 </div>
             </div>
 
             <button class="btn" id="queryBtn" onclick="queryAll()">開始查詢</button>
+            <div class="cors-proxy-note">
+                ⚠️ 查詢透過公共 CORS Proxy 轉發，每個縣市可能需要 5-15 秒。全選 21 縣市約需 3-5 分鐘。
+            </div>
         </div>
 
         <div class="results-section" id="resultsSection">
@@ -316,28 +347,35 @@
     </div>
 
     <script>
+        // CORS Proxy 列表（依序嘗試）
+        const CORS_PROXIES = [
+            'https://corsproxy.io/?',
+            'https://api.allorigins.win/raw?url=',
+            'https://cors-anywhere.herokuapp.com/'
+        ];
+
         const CITY_APIS = {
-            taipei: { name: '台北市', url: 'https://trafficapi.pma.gov.taipei/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
-            newtaipei: { name: '新北市', url: 'https://trafficapi.traffic.ntpc.gov.tw/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
-            keelung: { name: '基隆市', url: 'https://park.klcg.gov.tw/TrafficPayBill/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
-            taoyuan: { name: '桃園市', url: 'https://bill-epark.tycg.gov.tw/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
-            hsinchu_city: { name: '新竹市', url: 'https://histmp.hccg.gov.tw:5443/TrafficPayBill/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
-            hsinchu_county: { name: '新竹縣', url: 'https://hcpark.hchg.gov.tw/NationalParkingPayBillInquiry/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
-            miaoli: { name: '苗栗縣', url: 'https://miaoliparking.jotangi.com.tw/TrafficPayBill/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
-            taichung: { name: '台中市', url: 'http://tcparkingapi.taichung.gov.tw:8081/NationalParkingPayBillInquiry.Api/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
-            changhua: { name: '彰化縣', url: 'https://chpark.chcg.gov.tw/TrafficPayBill/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
-            yunlin: { name: '雲林縣', url: 'https://parking.yunlin.gov.tw/TrafficPayBill/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
-            chiayi_city: { name: '嘉義市', url: 'https://parking.chiayi.gov.tw/cypark/api/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
-            chiayi_county: { name: '嘉義縣', url: 'https://8voc0wuf1g.execute-api.ap-southeast-1.amazonaws.com/default/chiayi/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
-            tainan: { name: '台南市', url: 'https://parkingbill.tainan.gov.tw/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
-            kaohsiung: { name: '高雄市', url: 'https://kpp.tbkc.gov.tw/parking/V1/parking/PayBill/CarID/{carId}/CarType/{carType}' },
-            pingtung: { name: '屏東縣', url: 'https://8voc0wuf1g.execute-api.ap-southeast-1.amazonaws.com/default/pingtung/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
-            nantou: { name: '南投縣', url: 'https://parking.nantou.gov.tw/TrafficPayBill/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
-            yilan: { name: '宜蘭縣', url: 'https://billparking.e-land.gov.tw/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
-            hualien: { name: '花蓮縣', url: 'https://hl.parchere.com.tw/TrafficPayBill/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
-            taitung: { name: '台東縣', url: 'https://tt.guoyun.com.tw/TrafficPayBill/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
-            kinmen: { name: '金門縣', url: 'https://km.guoyun.com.tw/TrafficPayBill/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
-            penghu: { name: '澎湖縣', url: 'https://parking.penghu.gov.tw/TrafficPayBill/Parking/PayBill/CarID/{carId}/CarType/{carType}' }
+            taipei: { name: '台北市', url: 'https://trafficapi.pma.gov.taipei/Parking/PayBill/CarID/{carId}/CarType/{carType}', directUrl: 'https://pma.gov.taipei/' },
+            newtaipei: { name: '新北市', url: 'https://trafficapi.traffic.ntpc.gov.tw/Parking/PayBill/CarID/{carId}/CarType/{carType}', directUrl: 'https://parking.traffic.ntpc.gov.tw/' },
+            keelung: { name: '基隆市', url: 'https://park.klcg.gov.tw/TrafficPayBill/Parking/PayBill/CarID/{carId}/CarType/{carType}', directUrl: 'https://park.klcg.gov.tw/' },
+            taoyuan: { name: '桃園市', url: 'https://bill-epark.tycg.gov.tw/Parking/PayBill/CarID/{carId}/CarType/{carType}', directUrl: 'https://epark.tycg.gov.tw/' },
+            hsinchu_city: { name: '新竹市', url: 'https://histmp.hccg.gov.tw:5443/TrafficPayBill/Parking/PayBill/CarID/{carId}/CarType/{carType}', directUrl: 'https://parking.hccg.gov.tw/' },
+            hsinchu_county: { name: '新竹縣', url: 'https://hcpark.hchg.gov.tw/NationalParkingPayBillInquiry/Parking/PayBill/CarID/{carId}/CarType/{carType}', directUrl: 'https://hcpark.hchg.gov.tw/' },
+            miaoli: { name: '苗栗縣', url: 'https://miaoliparking.jotangi.com.tw/TrafficPayBill/Parking/PayBill/CarID/{carId}/CarType/{carType}', directUrl: 'https://miaoliparking.jotangi.com.tw/' },
+            taichung: { name: '台中市', url: 'http://tcparkingapi.taichung.gov.tw:8081/NationalParkingPayBillInquiry.Api/Parking/PayBill/CarID/{carId}/CarType/{carType}', directUrl: 'https://parking.taichung.gov.tw/' },
+            changhua: { name: '彰化縣', url: 'https://chpark.chcg.gov.tw/TrafficPayBill/Parking/PayBill/CarID/{carId}/CarType/{carType}', directUrl: 'https://chpark.chcg.gov.tw/' },
+            yunlin: { name: '雲林縣', url: 'https://parking.yunlin.gov.tw/TrafficPayBill/Parking/PayBill/CarID/{carId}/CarType/{carType}', directUrl: 'https://parking.yunlin.gov.tw/' },
+            chiayi_city: { name: '嘉義市', url: 'https://parking.chiayi.gov.tw/cypark/api/Parking/PayBill/CarID/{carId}/CarType/{carType}', directUrl: 'https://parking.chiayi.gov.tw/' },
+            chiayi_county: { name: '嘉義縣', url: 'https://8voc0wuf1g.execute-api.ap-southeast-1.amazonaws.com/default/chiayi/Parking/PayBill/CarID/{carId}/CarType/{carType}', directUrl: 'https://parking.chiayi.gov.tw/' },
+            tainan: { name: '台南市', url: 'https://parkingbill.tainan.gov.tw/Parking/PayBill/CarID/{carId}/CarType/{carType}', directUrl: 'https://parkingbill.tainan.gov.tw/' },
+            kaohsiung: { name: '高雄市', url: 'https://kpp.tbkc.gov.tw/parking/V1/parking/PayBill/CarID/{carId}/CarType/{carType}', directUrl: 'https://kpp.tbkc.gov.tw/' },
+            pingtung: { name: '屏東縣', url: 'https://8voc0wuf1g.execute-api.ap-southeast-1.amazonaws.com/default/pingtung/Parking/PayBill/CarID/{carId}/CarType/{carType}', directUrl: 'https://parking.pingtung.gov.tw/' },
+            nantou: { name: '南投縣', url: 'https://parking.nantou.gov.tw/TrafficPayBill/Parking/PayBill/CarID/{carId}/CarType/{carType}', directUrl: 'https://parking.nantou.gov.tw/' },
+            yilan: { name: '宜蘭縣', url: 'https://billparking.e-land.gov.tw/Parking/PayBill/CarID/{carId}/CarType/{carType}', directUrl: 'https://billparking.e-land.gov.tw/' },
+            hualien: { name: '花蓮縣', url: 'https://hl.parchere.com.tw/TrafficPayBill/Parking/PayBill/CarID/{carId}/CarType/{carType}', directUrl: 'https://hl.parchere.com.tw/' },
+            taitung: { name: '台東縣', url: 'https://tt.guoyun.com.tw/TrafficPayBill/Parking/PayBill/CarID/{carId}/CarType/{carType}', directUrl: 'https://tt.guoyun.com.tw/' },
+            kinmen: { name: '金門縣', url: 'https://km.guoyun.com.tw/TrafficPayBill/Parking/PayBill/CarID/{carId}/CarType/{carType}', directUrl: 'https://km.guoyun.com.tw/' },
+            penghu: { name: '澎湖縣', url: 'https://parking.penghu.gov.tw/TrafficPayBill/Parking/PayBill/CarID/{carId}/CarType/{carType}', directUrl: 'https://parking.penghu.gov.tw/' }
         };
 
         // Checkbox styling
@@ -353,6 +391,20 @@
                 selected.push(cb.value);
             });
             return selected;
+        }
+
+        function selectAllCities() {
+            document.querySelectorAll('.checkbox-item input').forEach(cb => {
+                cb.checked = true;
+                cb.parentElement.classList.add('selected');
+            });
+        }
+
+        function deselectAllCities() {
+            document.querySelectorAll('.checkbox-item input').forEach(cb => {
+                cb.checked = false;
+                cb.parentElement.classList.remove('selected');
+            });
         }
 
         function formatDate(dateStr) {
@@ -394,6 +446,29 @@
             `;
         }
 
+        async function fetchWithProxy(targetUrl, proxyIndex = 0) {
+            if (proxyIndex >= CORS_PROXIES.length) {
+                throw new Error('所有 CORS Proxy 皆失敗');
+            }
+            const proxy = CORS_PROXIES[proxyIndex];
+            const proxyUrl = proxy + encodeURIComponent(targetUrl);
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 15000);
+            try {
+                const response = await fetch(proxyUrl, {
+                    signal: controller.signal,
+                    headers: { 'Accept': 'application/json' }
+                });
+                clearTimeout(timeoutId);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                return await response.json();
+            } catch (error) {
+                clearTimeout(timeoutId);
+                console.warn(`Proxy ${proxyIndex} failed for ${targetUrl}:`, error.message);
+                return fetchWithProxy(targetUrl, proxyIndex + 1);
+            }
+        }
+
         async function queryCity(cityKey, carId, carType) {
             const city = CITY_APIS[cityKey];
             const url = city.url.replace('{carId}', encodeURIComponent(carId)).replace('{carType}', carType);
@@ -406,26 +481,13 @@
                     ${city.name}
                     <span class="status-badge status-loading"><span class="loading-spinner"></span>查詢中</span>
                 </div>
-                <div class="city-body">正在查詢 ${city.name} 停車費...</div>
+                <div class="city-body">正在查詢 ${city.name} 停車費（透過 CORS Proxy）...</div>
             `;
 
             document.getElementById('resultsContainer').appendChild(resultDiv);
 
             try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 10000);
-
-                const response = await fetch(url, {
-                    signal: controller.signal,
-                    headers: { 'Accept': 'application/json' }
-                });
-                clearTimeout(timeoutId);
-
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
-                }
-
-                const data = await response.json();
+                const data = await fetchWithProxy(url);
                 let bills = [];
                 let totalAmount = 0;
 
@@ -480,8 +542,11 @@
                     </div>
                     <div class="city-body">
                         <div class="error-message">
-                            無法連線至 ${city.name} 停車費查詢系統<br>
+                            無法連線至 ${city.name} 停車費查詢系統（CORS Proxy 失敗）<br>
                             <small>${errorMsg}</small>
+                        </div>
+                        <div class="cors-proxy-note">
+                            💡 建議直接前往 <a href="${city.directUrl}" target="_blank">${city.name}停車費查詢網站</a> 查詢
                         </div>
                     </div>
                 `;
