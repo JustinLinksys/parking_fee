@@ -256,11 +256,10 @@
         </div>
 
         <div class="form-section">
-            <div class="warning-banner">
-                <strong>⚠️ 瀏覽器 CORS 限制說明</strong><br>
-                各縣市政府 API 未開放跨域請求（CORS），瀏覽器直接呼叫會被阻擋。
-                目前使用公共 CORS Proxy 轉發請求，速度較慢且可能不穩定。
-                若查詢失敗，建議改用各縣市官方網站查詢。
+            <div class="warning-banner" style="background:#d4edda; border-color:#28a745; color:#155724;">
+                <strong>✅ Python 後端模式</strong><br>
+                目前使用本地 Python Flask 後端直接呼叫各縣市政府 API，不受瀏覽器 CORS 限制。
+                查詢速度更快、更穩定。
             </div>
             <div class="form-row">
                 <div class="form-group">
@@ -282,29 +281,29 @@
             </div>
 
             <div class="form-group">
-                <label>選擇查詢縣市（建議只選 2-3 個，全選查詢時間很長）</label>
+                <label>選擇查詢縣市（預設全選，後端並行查詢）</label>
                 <div class="checkbox-group" id="cityCheckboxes">
                     <label class="checkbox-item selected"><input type="checkbox" value="taipei" checked> 台北市</label>
                     <label class="checkbox-item selected"><input type="checkbox" value="newtaipei" checked> 新北市</label>
-                    <label class="checkbox-item"><input type="checkbox" value="keelung"> 基隆市</label>
-                    <label class="checkbox-item"><input type="checkbox" value="taoyuan"> 桃園市</label>
-                    <label class="checkbox-item"><input type="checkbox" value="hsinchu_city"> 新竹市</label>
-                    <label class="checkbox-item"><input type="checkbox" value="hsinchu_county"> 新竹縣</label>
-                    <label class="checkbox-item"><input type="checkbox" value="miaoli"> 苗栗縣</label>
-                    <label class="checkbox-item"><input type="checkbox" value="taichung"> 台中市</label>
-                    <label class="checkbox-item"><input type="checkbox" value="changhua"> 彰化縣</label>
-                    <label class="checkbox-item"><input type="checkbox" value="yunlin"> 雲林縣</label>
-                    <label class="checkbox-item"><input type="checkbox" value="chiayi_city"> 嘉義市</label>
-                    <label class="checkbox-item"><input type="checkbox" value="chiayi_county"> 嘉義縣</label>
-                    <label class="checkbox-item"><input type="checkbox" value="tainan"> 台南市</label>
-                    <label class="checkbox-item"><input type="checkbox" value="kaohsiung"> 高雄市</label>
-                    <label class="checkbox-item"><input type="checkbox" value="pingtung"> 屏東縣</label>
-                    <label class="checkbox-item"><input type="checkbox" value="nantou"> 南投縣</label>
-                    <label class="checkbox-item"><input type="checkbox" value="yilan"> 宜蘭縣</label>
-                    <label class="checkbox-item"><input type="checkbox" value="hualien"> 花蓮縣</label>
-                    <label class="checkbox-item"><input type="checkbox" value="taitung"> 台東縣</label>
-                    <label class="checkbox-item"><input type="checkbox" value="kinmen"> 金門縣</label>
-                    <label class="checkbox-item"><input type="checkbox" value="penghu"> 澎湖縣</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="keelung" checked> 基隆市</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="taoyuan" checked> 桃園市</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="hsinchu_city" checked> 新竹市</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="hsinchu_county" checked> 新竹縣</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="miaoli" checked> 苗栗縣</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="taichung" checked> 台中市</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="changhua" checked> 彰化縣</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="yunlin" checked> 雲林縣</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="chiayi_city" checked> 嘉義市</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="chiayi_county" checked> 嘉義縣</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="tainan" checked> 台南市</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="kaohsiung" checked> 高雄市</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="pingtung" checked> 屏東縣</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="nantou" checked> 南投縣</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="yilan" checked> 宜蘭縣</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="hualien" checked> 花蓮縣</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="taitung" checked> 台東縣</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="kinmen" checked> 金門縣</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="penghu" checked> 澎湖縣</label>
                 </div>
                 <div style="margin-top:8px; font-size:13px;">
                     <button type="button" onclick="selectAllCities()" style="padding:4px 12px; font-size:12px; cursor:pointer;">全選</button>
@@ -314,7 +313,7 @@
 
             <button class="btn" id="queryBtn" onclick="queryAll()">開始查詢</button>
             <div class="cors-proxy-note">
-                ⚠️ 查詢透過公共 CORS Proxy 轉發，每個縣市可能需要 5-15 秒。全選 21 縣市約需 3-5 分鐘。
+                💡 Python 後端直接呼叫各縣市 API，查詢速度快（每縣市約 1-3 秒）。全選 21 縣市約需 20-30 秒。
             </div>
         </div>
 
@@ -471,8 +470,6 @@
 
         async function queryCity(cityKey, carId, carType) {
             const city = CITY_APIS[cityKey];
-            const url = city.url.replace('{carId}', encodeURIComponent(carId)).replace('{carType}', carType);
-
             const resultDiv = document.createElement('div');
             resultDiv.className = 'city-result';
             resultDiv.id = `result-${cityKey}`;
@@ -481,29 +478,25 @@
                     ${city.name}
                     <span class="status-badge status-loading"><span class="loading-spinner"></span>查詢中</span>
                 </div>
-                <div class="city-body">正在查詢 ${city.name} 停車費（透過 CORS Proxy）...</div>
+                <div class="city-body">正在查詢 ${city.name} 停車費...</div>
             `;
-
             document.getElementById('resultsContainer').appendChild(resultDiv);
 
             try {
-                const data = await fetchWithProxy(url);
-                let bills = [];
-                let totalAmount = 0;
+                const resp = await fetch('/api/query', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ car_id: carId, car_type: carType, cities: [cityKey] })
+                });
+                const data = await resp.json();
+                const result = data.results[cityKey];
 
-                if (Array.isArray(data)) {
-                    bills = data;
-                } else if (data.Result && Array.isArray(data.Result)) {
-                    bills = data.Result;
-                } else if (data.data && Array.isArray(data.data)) {
-                    bills = data.data;
-                } else if (data.PayBills && Array.isArray(data.PayBills)) {
-                    bills = data.PayBills;
+                if (!result.success) {
+                    throw new Error(result.error || '查詢失敗');
                 }
 
-                totalAmount = bills.reduce((sum, bill) => {
-                    return sum + (parseFloat(bill.Amount || bill.amount || bill.TotalAmount || 0) || 0);
-                }, 0);
+                const bills = result.bills || [];
+                const totalAmount = result.total_amount || 0;
 
                 const statusBadge = bills.length > 0
                     ? `<span class="status-badge status-success">${bills.length} 筆未繳</span>`
@@ -534,7 +527,6 @@
                 return { success: true, bills: bills.length, amount: totalAmount };
 
             } catch (error) {
-                const errorMsg = error.name === 'AbortError' ? '查詢逾時' : error.message;
                 resultDiv.innerHTML = `
                     <div class="city-header">
                         ${city.name}
@@ -542,8 +534,8 @@
                     </div>
                     <div class="city-body">
                         <div class="error-message">
-                            無法連線至 ${city.name} 停車費查詢系統（CORS Proxy 失敗）<br>
-                            <small>${errorMsg}</small>
+                            無法連線至 ${city.name} 停車費查詢系統<br>
+                            <small>${error.message}</small>
                         </div>
                         <div class="cors-proxy-note">
                             💡 建議直接前往 <a href="${city.directUrl}" target="_blank">${city.name}停車費查詢網站</a> 查詢
