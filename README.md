@@ -14,7 +14,7 @@ pip install -r requirements.txt
 python3 app.py
 ```
 
-打開瀏覽器訪問：http://localhost:5000
+打開瀏覽器訪問：http://localhost:5001
 
 ## 功能
 

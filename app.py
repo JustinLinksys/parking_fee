@@ -240,7 +240,8 @@ def api_cities():
 
 
 if __name__ == "__main__":
+    port = 5001
     print("🅿️  全台停車費查詢後端啟動")
-    print("📍 http://localhost:5000")
+    print(f"📍 http://localhost:{port}")
     print(f"📋 支援 {len(CITY_APIS)} 個縣市")
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=port, debug=True)
