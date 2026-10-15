@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全台停車費查詢</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 { font-size: 28px; margin-bottom: 8px; }
+        .header p { opacity: 0.9; font-size: 14px; }
+        .form-section {
+            padding: 30px;
+            border-bottom: 1px solid #eee;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        @media (max-width: 600px) {
+            .form-row { grid-template-columns: 1fr; }
+        }
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .results-section {
+            padding: 30px;
+            display: none;
+        }
+        .results-section.active { display: block; }
+        .city-result {
+            margin-bottom: 24px;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .city-header {
+            background: #f8f9fa;
+            padding: 16px 20px;
+            font-weight: 600;
+            font-size: 18px;
+            color: #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .city-body {
+            padding: 20px;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status-success { background: #d4edda; color: #155724; }
+        .status-error { background: #f8d7da; color: #721c24; }
+        .status-loading { background: #fff3cd; color: #856404; }
+        .status-pending { background: #e2e3e5; color: #383d41; }
+        .bill-item {
+            padding: 12px 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            background: #fafafa;
+        }
+        .bill-item:last-child { margin-bottom: 0; }
+        .bill-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+        .bill-row:last-child { margin-bottom: 0; }
+        .bill-label { color: #666; }
+        .bill-value { font-weight: 600; color: #333; }
+        .amount { color: #e74c3c; font-size: 18px; }
+        .total-amount {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px 20px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: 700;
+        }
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        .error-message {
+            color: #e74c3c;
+            padding: 12px;
+            background: #fdf2f2;
+            border-radius: 8px;
+            margin-top: 12px;
+            font-size: 14px;
+        }
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .summary-bar {
+            display: flex;
+            justify-content: space-around;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .summary-item { text-align: center; }
+        .summary-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #667eea;
+        }
+        .expand-btn {
+            background: none;
+            border: none;
+            color: #667eea;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 4px 8px;
+        }
+        .city-details { display: none; margin-top: 12px; }
+        .city-details.expanded { display: block; }
+        .note {
+            font-size: 12px;
+            color: #999;
+            text-align: center;
+            padding: 16px;
+            border-top: 1px solid #eee;
+        }
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 13px;
+            background: #f5f5f5;
+            padding: 6px 12px;
+            border-radius: 16px;
+            cursor: pointer;
+        }
+        .checkbox-item input {
+            width: auto;
+            margin: 0;
+        }
+        .checkbox-item.selected {
+            background: #667eea;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🅿️ 全台停車費查詢</h1>
+            <p>輸入車牌號碼，一次查詢全台各縣市路邊停車費</p>
+        </div>
+
+        <div class="form-section">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="carId">車牌號碼</label>
+                    <input type="text" id="carId" placeholder="例如：ABC-1234" maxlength="10">
+                </div>
+                <div class="form-group">
+                    <label for="carType">車種</label>
+                    <select id="carType">
+                        <option value="C">自小客車</option>
+                        <option value="M">機車</option>
+                        <option value="T">自小貨車</option>
+                        <option value="B">大客車</option>
+                        <option value="K">大貨車</option>
+                        <option value="H">曳引車</option>
+                        <option value="E">電動自小客車</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>選擇查詢縣市（預設全選）</label>
+                <div class="checkbox-group" id="cityCheckboxes">
+                    <label class="checkbox-item selected"><input type="checkbox" value="taipei" checked> 台北市</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="newtaipei" checked> 新北市</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="keelung" checked> 基隆市</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="taoyuan" checked> 桃園市</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="hsinchu_city" checked> 新竹市</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="hsinchu_county" checked> 新竹縣</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="miaoli" checked> 苗栗縣</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="taichung" checked> 台中市</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="changhua" checked> 彰化縣</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="yunlin" checked> 雲林縣</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="chiayi_city" checked> 嘉義市</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="chiayi_county" checked> 嘉義縣</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="tainan" checked> 台南市</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="kaohsiung" checked> 高雄市</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="pingtung" checked> 屏東縣</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="nantou" checked> 南投縣</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="yilan" checked> 宜蘭縣</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="hualien" checked> 花蓮縣</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="taitung" checked> 台東縣</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="kinmen" checked> 金門縣</label>
+                    <label class="checkbox-item selected"><input type="checkbox" value="penghu" checked> 澎湖縣</label>
+                </div>
+            </div>
+
+            <button class="btn" id="queryBtn" onclick="queryAll()">開始查詢</button>
+        </div>
+
+        <div class="results-section" id="resultsSection">
+            <div class="summary-bar" id="summaryBar" style="display:none;">
+                <div class="summary-item">
+                    <div class="summary-number" id="totalCities">0</div>
+                    <div>查詢縣市</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-number" id="successCities">0</div>
+                    <div>成功</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-number" id="totalBills">0</div>
+                    <div>未繳單據</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-number" id="totalAmount">0</div>
+                    <div>總金額</div>
+                </div>
+            </div>
+            <div id="resultsContainer"></div>
+        </div>
+
+        <div class="note">
+            資料來源：TDX 運輸資料流通服務平台 · 各縣市政府停車費查詢 API<br>
+            查詢結果僅供參考，實際金額以各縣市停車管理單位公告為準
+        </div>
+    </div>
+
+    <script>
+        const CITY_APIS = {
+            taipei: { name: '台北市', url: 'https://trafficapi.pma.gov.taipei/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
+            newtaipei: { name: '新北市', url: 'https://trafficapi.traffic.ntpc.gov.tw/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
+            keelung: { name: '基隆市', url: 'https://park.klcg.gov.tw/TrafficPayBill/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
+            taoyuan: { name: '桃園市', url: 'https://bill-epark.tycg.gov.tw/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
+            hsinchu_city: { name: '新竹市', url: 'https://histmp.hccg.gov.tw:5443/TrafficPayBill/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
+            hsinchu_county: { name: '新竹縣', url: 'https://hcpark.hchg.gov.tw/NationalParkingPayBillInquiry/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
+            miaoli: { name: '苗栗縣', url: 'https://miaoliparking.jotangi.com.tw/TrafficPayBill/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
+            taichung: { name: '台中市', url: 'http://tcparkingapi.taichung.gov.tw:8081/NationalParkingPayBillInquiry.Api/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
+            changhua: { name: '彰化縣', url: 'https://chpark.chcg.gov.tw/TrafficPayBill/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
+            yunlin: { name: '雲林縣', url: 'https://parking.yunlin.gov.tw/TrafficPayBill/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
+            chiayi_city: { name: '嘉義市', url: 'https://parking.chiayi.gov.tw/cypark/api/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
+            chiayi_county: { name: '嘉義縣', url: 'https://8voc0wuf1g.execute-api.ap-southeast-1.amazonaws.com/default/chiayi/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
+            tainan: { name: '台南市', url: 'https://parkingbill.tainan.gov.tw/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
+            kaohsiung: { name: '高雄市', url: 'https://kpp.tbkc.gov.tw/parking/V1/parking/PayBill/CarID/{carId}/CarType/{carType}' },
+            pingtung: { name: '屏東縣', url: 'https://8voc0wuf1g.execute-api.ap-southeast-1.amazonaws.com/default/pingtung/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
+            nantou: { name: '南投縣', url: 'https://parking.nantou.gov.tw/TrafficPayBill/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
+            yilan: { name: '宜蘭縣', url: 'https://billparking.e-land.gov.tw/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
+            hualien: { name: '花蓮縣', url: 'https://hl.parchere.com.tw/TrafficPayBill/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
+            taitung: { name: '台東縣', url: 'https://tt.guoyun.com.tw/TrafficPayBill/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
+            kinmen: { name: '金門縣', url: 'https://km.guoyun.com.tw/TrafficPayBill/Parking/PayBill/CarID/{carId}/CarType/{carType}' },
+            penghu: { name: '澎湖縣', url: 'https://parking.penghu.gov.tw/TrafficPayBill/Parking/PayBill/CarID/{carId}/CarType/{carType}' }
+        };
+
+        // Checkbox styling
+        document.querySelectorAll('.checkbox-item input').forEach(cb => {
+            cb.addEventListener('change', function() {
+                this.parentElement.classList.toggle('selected', this.checked);
+            });
+        });
+
+        function getSelectedCities() {
+            const selected = [];
+            document.querySelectorAll('.checkbox-item input:checked').forEach(cb => {
+                selected.push(cb.value);
+            });
+            return selected;
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '-';
+            try {
+                const d = new Date(dateStr);
+                return d.toLocaleDateString('zh-TW');
+            } catch {
+                return dateStr;
+            }
+        }
+
+        function renderBillItem(bill) {
+            const amount = bill.Amount || bill.amount || bill.TotalAmount || 0;
+            const parkDate = bill.ParkDate || bill.parkDate || bill.ParkingDate || '-';
+            const parkTime = bill.ParkTime || bill.parkTime || bill.ParkingTime || '';
+            const location = bill.ParkingLocation || bill.parkingLocation || bill.Location || '-';
+            const billNo = bill.BillNo || bill.billNo || bill.TicketNo || '-';
+
+            return `
+                <div class="bill-item">
+                    <div class="bill-row">
+                        <span class="bill-label">單據號碼</span>
+                        <span class="bill-value">${billNo}</span>
+                    </div>
+                    <div class="bill-row">
+                        <span class="bill-label">停車日期</span>
+                        <span class="bill-value">${formatDate(parkDate)} ${parkTime}</span>
+                    </div>
+                    <div class="bill-row">
+                        <span class="bill-label">停車地點</span>
+                        <span class="bill-value">${location}</span>
+                    </div>
+                    <div class="bill-row">
+                        <span class="bill-label">金額</span>
+                        <span class="bill-value amount">NT$ ${amount}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function queryCity(cityKey, carId, carType) {
+            const city = CITY_APIS[cityKey];
+            const url = city.url.replace('{carId}', encodeURIComponent(carId)).replace('{carType}', carType);
+
+            const resultDiv = document.createElement('div');
+            resultDiv.className = 'city-result';
+            resultDiv.id = `result-${cityKey}`;
+            resultDiv.innerHTML = `
+                <div class="city-header">
+                    ${city.name}
+                    <span class="status-badge status-loading"><span class="loading-spinner"></span>查詢中</span>
+                </div>
+                <div class="city-body">正在查詢 ${city.name} 停車費...</div>
+            `;
+
+            document.getElementById('resultsContainer').appendChild(resultDiv);
+
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+                const response = await fetch(url, {
+                    signal: controller.signal,
+                    headers: { 'Accept': 'application/json' }
+                });
+                clearTimeout(timeoutId);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const data = await response.json();
+                let bills = [];
+                let totalAmount = 0;
+
+                if (Array.isArray(data)) {
+                    bills = data;
+                } else if (data.Result && Array.isArray(data.Result)) {
+                    bills = data.Result;
+                } else if (data.data && Array.isArray(data.data)) {
+                    bills = data.data;
+                } else if (data.PayBills && Array.isArray(data.PayBills)) {
+                    bills = data.PayBills;
+                }
+
+                totalAmount = bills.reduce((sum, bill) => {
+                    return sum + (parseFloat(bill.Amount || bill.amount || bill.TotalAmount || 0) || 0);
+                }, 0);
+
+                const statusBadge = bills.length > 0
+                    ? `<span class="status-badge status-success">${bills.length} 筆未繳</span>`
+                    : `<span class="status-badge status-success">無未繳單據</span>`;
+
+                let bodyHtml = '';
+                if (bills.length > 0) {
+                    bodyHtml = `
+                        <div class="total-amount">應繳總額：NT$ ${totalAmount}</div>
+                        <div style="padding: 16px;">
+                            ${bills.map(renderBillItem).join('')}
+                        </div>
+                    `;
+                } else {
+                    bodyHtml = `<div class="no-data">🎉 目前沒有未繳停車費單據</div>`;
+                }
+
+                resultDiv.innerHTML = `
+                    <div class="city-header">
+                        ${city.name}
+                        ${statusBadge}
+                    </div>
+                    <div class="city-body" style="padding:0;">
+                        ${bodyHtml}
+                    </div>
+                `;
+
+                return { success: true, bills: bills.length, amount: totalAmount };
+
+            } catch (error) {
+                const errorMsg = error.name === 'AbortError' ? '查詢逾時' : error.message;
+                resultDiv.innerHTML = `
+                    <div class="city-header">
+                        ${city.name}
+                        <span class="status-badge status-error">查詢失敗</span>
+                    </div>
+                    <div class="city-body">
+                        <div class="error-message">
+                            無法連線至 ${city.name} 停車費查詢系統<br>
+                            <small>${errorMsg}</small>
+                        </div>
+                    </div>
+                `;
+                return { success: false, bills: 0, amount: 0 };
+            }
+        }
+
+        async function queryAll() {
+            const carId = document.getElementById('carId').value.trim().toUpperCase();
+            const carType = document.getElementById('carType').value;
+            const selectedCities = getSelectedCities();
+
+            if (!carId) {
+                alert('請輸入車牌號碼');
+                return;
+            }
+            if (selectedCities.length === 0) {
+                alert('請至少選擇一個縣市');
+                return;
+            }
+
+            const btn = document.getElementById('queryBtn');
+            btn.disabled = true;
+            btn.textContent = '查詢中...';
+
+            const resultsSection = document.getElementById('resultsSection');
+            const resultsContainer = document.getElementById('resultsContainer');
+            resultsSection.classList.add('active');
+            resultsContainer.innerHTML = '';
+
+            // 依序查詢（避免 IP 限制）
+            let successCount = 0;
+            let totalBills = 0;
+            let totalAmount = 0;
+
+            for (const cityKey of selectedCities) {
+                const result = await queryCity(cityKey, carId, carType);
+                if (result.success) {
+                    successCount++;
+                    totalBills += result.bills;
+                    totalAmount += result.amount;
+                }
+            }
+
+            // Update summary
+            document.getElementById('summaryBar').style.display = 'flex';
+            document.getElementById('totalCities').textContent = selectedCities.length;
+            document.getElementById('successCities').textContent = successCount;
+            document.getElementById('totalBills').textContent = totalBills;
+            document.getElementById('totalAmount').textContent = `NT$ ${totalAmount}`;
+
+            btn.disabled = false;
+            btn.textContent = '開始查詢';
+        }
+
+        // Enter key support
+        document.getElementById('carId').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') queryAll();
+        });
+    </script>
+</body>
+</html>
