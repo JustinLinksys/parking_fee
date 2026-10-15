@@ -57,7 +57,36 @@ python3 app.py
 
 ## 資料來源
 
-TDX 運輸資料流通服務平台 + 各縣市政府停車費查詢 API
+- TDX 運輸資料流通服務平台 - 路邊停車費查詢 API：
+  https://tdx.transportdata.tw/api-service-thirdParty/parkingFee
+- 全國路邊停車費查詢 API 服務規範：
+  https://drive.google.com/file/d/1bu7X4QWhDnXsypu82KJtPVW7K6wbdpXQ/view?usp=sharing
+
+### 各縣市 API Endpoint
+
+| 縣市 | API URL |
+|------|---------|
+| 台北市 | https://trafficapi.pma.gov.taipei/Parking/PayBill/CarID/{CarID}/CarType/{CarType} |
+| 新北市 | https://trafficapi.traffic.ntpc.gov.tw/Parking/PayBill/CarID/{CarID}/CarType/{CarType} |
+| 基隆市 | https://park.klcg.gov.tw/TrafficPayBill/Parking/PayBill/CarID/{CarID}/CarType/{CarType} |
+| 桃園市 | https://bill-epark.tycg.gov.tw/Parking/PayBill/CarID/{CarID}/CarType/{CarType} |
+| 新竹市 | https://histmp.hccg.gov.tw:5443/TrafficPayBill/Parking/PayBill/CarID/{CarID}/CarType/{CarType} |
+| 新竹縣 | https://hcpark.hchg.gov.tw/NationalParkingPayBillInquiry/Parking/PayBill/CarID/{CarID}/CarType/{CarType} |
+| 苗栗縣 | https://miaoliparking.jotangi.com.tw/TrafficPayBill/Parking/PayBill/CarID/{CarID}/CarType/{CarType} |
+| 台中市 | http://tcparkingapi.taichung.gov.tw:8081/NationalParkingPayBillInquiry.Api/Parking/PayBill/CarID/{CarID}/CarType/{CarType} |
+| 彰化縣 | https://chpark.chcg.gov.tw/TrafficPayBill/Parking/PayBill/CarID/{CarID}/CarType/{CarType} |
+| 雲林縣 | https://parking.yunlin.gov.tw/TrafficPayBill/Parking/PayBill/CarID/{CarID}/CarType/{CarType} |
+| 嘉義市 | https://parking.chiayi.gov.tw/cypark/api/Parking/PayBill/CarID/{CarID}/CarType/{CarType} |
+| 嘉義縣 | https://8voc0wuf1g.execute-api.ap-southeast-1.amazonaws.com/default/chiayi/Parking/PayBill/CarID/{CarID}/CarType/{CarType} |
+| 台南市 | https://parkingbill.tainan.gov.tw/Parking/PayBill/CarID/{CarID}/CarType/{CarType} |
+| 高雄市 | https://kpp.tbkc.gov.tw/parking/V1/parking/PayBill/CarID/{CarID}/CarType/{CarType} |
+| 屏東縣 | https://8voc0wuf1g.execute-api.ap-southeast-1.amazonaws.com/default/pingtung/Parking/PayBill/CarID/{CarID}/CarType/{CarType} |
+| 南投縣 | https://parking.nantou.gov.tw/TrafficPayBill/Parking/PayBill/CarID/{CarID}/CarType/{CarType} |
+| 宜蘭縣 | https://billparking.e-land.gov.tw/Parking/PayBill/CarID/{CarID}/CarType/{CarType} |
+| 花蓮縣 | https://hl.parchere.com.tw/TrafficPayBill/Parking/PayBill/CarID/{CarID}/CarType/{CarType} |
+| 台東縣 | https://tt.guoyun.com.tw/TrafficPayBill/Parking/PayBill/CarID/{CarID}/CarType/{CarType} |
+| 金門縣 | https://km.guoyun.com.tw/TrafficPayBill/Parking/PayBill/CarID/{CarID}/CarType/{CarType} |
+| 澎湖縣 | https://parking.penghu.gov.tw/TrafficPayBill/Parking/PayBill/CarID/{CarID}/CarType/{CarType} |
 
 ## 注意事項
 
